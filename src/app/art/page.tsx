@@ -2,39 +2,12 @@
 "use client";
 
 import PenIcon from "../icons/PenIcon";
-import EraserIcon from '../icons/EraserIcon';
-import PaletteIcon from '../icons/PaletteIcon';
-import SaveIcon from '../icons/SaveIcon';
-import SaveBMPIcon from '../icons/SaveBMPIcon';
+import EraserIcon from "../icons/EraserIcon";
+import PaletteIcon from "../icons/PaletteIcon";
+import SaveIcon from "../icons/SaveIcon";
+import SaveBMPIcon from "../icons/SaveBMPIcon";
 
 import { useState, useRef, useEffect } from "react";
-
-
-/* Flattening the Canvas
-@description: Captures the current drawing, redraws the background color, and flattens all drawing layers into one single canvas
- */
-/* const flattenCanvas = (
-  canvasRef: React.RefObject<HTMLCanvasElement>,
-  canvasColor: string
-) => {
-  if (!canvasRef.current) return;
-  const canvas = canvasRef.current;
-  const ctx = canvas.getContext("2d");
-
-  // Draw background first
-  ctx!.fillStyle = canvasColor;
-  ctx!.fillRect(0, 0, canvas.width, canvas.height);
-
-  // Draw the existing image over it (flatten the image)
-  const tempImg = new Image();
-  tempImg.src = canvas.toDataURL("image/png"); // Capture current drawing as a PNG
-  tempImg.onload = () => {
-    ctx!.drawImage(tempImg, 0, 0, canvas.width, canvas.height); // Redraw it as a single layer
-  };
-};
- */
- 
-
 
 /**
  * Main Drawing Page Component
@@ -124,66 +97,6 @@ canvas.height = 2808;
   const handlePenColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPenColor(e.target.value);
   };
-
-  /* 
-  
-  // Save the current drawing as an SVG * @description: Calls flattenCanvas() to ensure the drawing is flattened before export 
-  const saveAsSVG = () => {
-    if (!canvasRef.current) return;
-    const canvas = canvasRef.current;
-    flattenCanvas(canvasRef, canvasColor); // Pass canvasRef to flattenCanvas
-
-    const dataURL = canvas.toDataURL("image/png");
-
-    // Create SVG with embedded background
-    const svgContent = `<?xml version="1.0" encoding="UTF-8"?>
-      <svg xmlns="http://www.w3.org/2000/svg" 
-           xmlns:xlink="http://www.w3.org/1999/xlink"
-           width="${canvas.width}" 
-           height="${canvas.height}">
-        <rect width="100%" height="100%" fill="${canvasColor}"/>
-        <!-- Embedding the PNG image -->
-        <image xlink:href="${dataURL}" width="100%" height="100%" preserveAspectRatio="none"/>
-      </svg>`;
-
-    // Universal mobile handling
-    if (/(iPhone|iPad|iPod|Android)/i.test(navigator.userAgent)) {
-      const mobileUrl = URL.createObjectURL(
-        new Blob([svgContent], { type: "image/svg+xml" })
-      );
-      const newWindow = window.open(mobileUrl, "_blank");
-
-      // Fallback if popup blocked
-      if (!newWindow) {
-        const link = document.createElement("a");
-        link.href = mobileUrl;
-        link.target = "_blank";
-        link.style.display = "none";
-        document.body.appendChild(link);
-
-        if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
-          alert(
-            '1. Tap the share icon\n2. Select "Save to Files"\n3. Choose location'
-          );
-        }
-        link.click();
-        document.body.removeChild(link);
-      }
-
-      // Cleanup after delay
-      setTimeout(() => URL.revokeObjectURL(mobileUrl), 30000);
-    } else {
-      // Desktop download
-      const link = document.createElement("a");
-      link.download = "drawing.svg";
-      link.href = URL.createObjectURL(
-        new Blob([svgContent], { type: "image/svg+xml" })
-      );
-      link.click();
-      URL.revokeObjectURL(link.href);
-    }
-  };
- */
 
   /**
    * Saves the canvas as a PNG image, including the background and the drawing.
@@ -496,104 +409,106 @@ canvas.height = 2808;
 
       {/* Bottom Toolbar */}
       <div
-        className="fixed bottom-0 left-0 right-0 p-4 bg-gray-100 border-t flex gap-4 items-center justify-center"
+        className="fixed bottom-0 left-0 right-0 p-4 bg-gray-100 border-t flex gap-4 items-center justify-center overflow-x-auto"
         style={{
           paddingBottom: "env(safe-area-inset-bottom)",
           height: "84px",
         }}
       >
-        <label className="relative cursor-pointer">
-          <input
-            type="color"
-            ref={penColorInputRef}
-            className="absolute opacity-0 w-0 h-0"
-            value={penColor}
-            onChange={handlePenColorChange}
-          />
-          <div
-            onClick={() => setSelectedTool("pen")}
+        <div className="flex justify-center space-x-4">
+          {/* Pen Tool */}
+          <label className="relative cursor-pointer">
+            <input
+              type="color"
+              ref={penColorInputRef}
+              className="absolute opacity-0 w-0 h-0"
+              value={penColor}
+              onChange={handlePenColorChange}
+            />
+            <div
+              onClick={() => setSelectedTool("pen")}
+              className={`p-2 rounded-lg ${
+                selectedTool === "pen" ? "bg-blue-100" : "bg-white"
+              }`}
+            >
+              <PenIcon selected={selectedTool === "pen"} />
+            </div>
+          </label>
+
+          {/* Palette Tool */}
+          <label className="relative cursor-pointer">
+            <input
+              type="color"
+              ref={canvasColorInputRef}
+              className="absolute opacity-0 w-0 h-0"
+              value={canvasColor}
+              onChange={handleCanvasColorChange}
+            />
+            <div className="p-2 rounded-lg bg-white hover:bg-gray-50">
+              <PaletteIcon selected={false} />
+            </div>
+          </label>
+
+          {/* Eraser Tool */}
+          <button
+            onClick={() => setSelectedTool("eraser")}
             className={`p-2 rounded-lg ${
-              selectedTool === "pen" ? "bg-blue-100" : "bg-white"
+              selectedTool === "eraser" ? "bg-blue-100" : "bg-white"
             }`}
           >
-            <PenIcon selected={selectedTool === "pen"} />
-          </div>
-        </label>
-        <label className="relative cursor-pointer">
-          <input
-            type="color"
-            ref={canvasColorInputRef}
-            className="absolute opacity-0 w-0 h-0"
-            value={canvasColor}
-            onChange={handleCanvasColorChange}
-          />
-          <div className="p-2 rounded-lg bg-white hover:bg-gray-50">
-            <PaletteIcon />
-          </div>
-        </label>
-        <button
-          onClick={() => setSelectedTool("eraser")}
-          className={`p-2 rounded-lg ${
-            selectedTool === "eraser" ? "bg-blue-100" : "bg-white"
-          }`}
-        >
-          <EraserIcon selected={selectedTool === "eraser"} />
-        </button>
+            <EraserIcon selected={selectedTool === "eraser"} />
+          </button>
 
-        {/*  <button
-          onClick={saveAsSVG}
-          onTouchEnd={saveAsSVG} // Mobile touch support
-          className="p-2 rounded-lg bg-white hover:bg-gray-50"
-        >
-          <SaveIcon />
-        </button> */}
+          {/* Save as PNG */}
+          <button
+            onClick={saveAsPNG} // Trigger saveAsPNG function
+            className="p-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600"
+          >
+            💾PNG
+          </button>
 
-        <button
-          onClick={saveAsPNG} // Trigger saveAsPNG function
-          className="p-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600"
-        >
-          💾PNG
-        </button>
+          {/* Save as JPEG */}
+          <button
+            onClick={saveAsJPEG} // Trigger saveAsJPEG when clicked
+            className="p-2 rounded-lg bg-green-500  hover:bg-gray-50"
+          >
+            💾JPEG
+          </button>
 
-        <button
-          onClick={saveAsJPEG} // Trigger saveAsJPEG when clicked
-          className="p-2 rounded-lg bg-green-500  hover:bg-gray-50"
-        >
-          💾JPEG
-        </button>
-        {/* Save as BMP */}
-        <button
-          onClick={saveAsBMP}
-          className="p-2 rounded-lg bg-pink-300 hover:bg-pink-900"
-        >
-          <SaveBMPIcon />
-          BMP
-        </button>
+          {/* Save as BMP */}
+          <button
+            onClick={saveAsBMP}
+            className="p-2 rounded-lg bg-pink-300 hover:bg-pink-900"
+          >
+            <SaveBMPIcon selected={false} />
+            BMP
+          </button>
 
-        {/* Save as WebP */}
-        <button
-          onClick={saveAsWebP}
-          className="p-2 rounded-lg bg-indigo-500 hover:bg-indigo-900"
-        >
-          <SaveIcon />
-          WEBP
-        </button>
+          {/* Save as WebP */}
+          <button
+            onClick={saveAsWebP}
+            className="p-2 rounded-lg bg-indigo-500 hover:bg-indigo-900"
+          >
+            <SaveIcon selected={false} />
+            WEBP
+          </button>
 
-        {/* Save as Base64 String */}
-        <button
-          onClick={saveAsBase64String}
-          className="p-2 rounded-lg bg-cyan-500 hover:bg-cyan-950"
-        >
-          💾 Base64
-        </button>
+          {/* Save as Base64 String */}
+          <button
+            onClick={saveAsBase64String}
+            className="p-2 rounded-lg bg-cyan-500 hover:bg-cyan-950"
+          >
+            💾 Base64
+          </button>
 
-        {/* Save as SVG */}
-        <button
-          onClick={saveAsSVG2}
-          className="p-2 rounded-lg bg-fuchsia-500 hover:bg-fuchsia-900"
-        >
-          💾 saveAsSVG2
-        </button>
+          {/* Save as SVG */}
+          <button
+            onClick={saveAsSVG2}
+            className="p-2 rounded-lg bg-fuchsia-500 hover:bg-fuchsia-900"
+          >
+            💾 saveAsSVG2
+          </button>
+        </div>
       </div>
     </div>
   );
