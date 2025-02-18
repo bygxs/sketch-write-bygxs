@@ -416,6 +416,49 @@ canvas.height = 2808;
         }}
       >
         <div className="flex justify-center space-x-4">
+          {/* Save as PNG */}
+          <button
+            onClick={saveAsPNG}
+            className="p-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600"
+          >
+            💾 PNG
+          </button>
+
+          {/* Save as JPEG */}
+          <button
+            onClick={saveAsJPEG}
+            className="p-2 rounded-lg bg-green-500 hover:bg-gray-50"
+          >
+            💾 JPEG
+          </button>
+
+          {/* Save as BMP */}
+          <button
+            onClick={saveAsBMP}
+            className="p-2 rounded-lg bg-pink-300 hover:bg-pink-900"
+          >
+            💾 BMP
+          </button>
+
+          {/* Palette Tool */}
+          <label className="relative cursor-pointer">
+            <input
+              type="color"
+              ref={canvasColorInputRef}
+              className="absolute opacity-0 w-0 h-0"
+              value={canvasColor}
+              onChange={handleCanvasColorChange}
+            />
+            <div
+              onClick={() => setSelectedTool("palette")}
+              className={`p-2 rounded-lg ${
+                selectedTool === "palette" ? "bg-blue-100" : "bg-white"
+              }`}
+            >
+              🎨 {/* Palette Emoji */}
+            </div>
+          </label>
+
           {/* Pen Tool */}
           <label className="relative cursor-pointer">
             <input
@@ -431,21 +474,7 @@ canvas.height = 2808;
                 selectedTool === "pen" ? "bg-blue-100" : "bg-white"
               }`}
             >
-              <PenIcon selected={selectedTool === "pen"} />
-            </div>
-          </label>
-
-          {/* Palette Tool */}
-          <label className="relative cursor-pointer">
-            <input
-              type="color"
-              ref={canvasColorInputRef}
-              className="absolute opacity-0 w-0 h-0"
-              value={canvasColor}
-              onChange={handleCanvasColorChange}
-            />
-            <div className="p-2 rounded-lg bg-white hover:bg-gray-50">
-              <PaletteIcon selected={false} />
+              ✏️ {/* Pen Emoji */}
             </div>
           </label>
 
@@ -456,32 +485,7 @@ canvas.height = 2808;
               selectedTool === "eraser" ? "bg-blue-100" : "bg-white"
             }`}
           >
-            <EraserIcon selected={selectedTool === "eraser"} />
-          </button>
-
-          {/* Save as PNG */}
-          <button
-            onClick={saveAsPNG} // Trigger saveAsPNG function
-            className="p-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600"
-          >
-            💾PNG
-          </button>
-
-          {/* Save as JPEG */}
-          <button
-            onClick={saveAsJPEG} // Trigger saveAsJPEG when clicked
-            className="p-2 rounded-lg bg-green-500  hover:bg-gray-50"
-          >
-            💾JPEG
-          </button>
-
-          {/* Save as BMP */}
-          <button
-            onClick={saveAsBMP}
-            className="p-2 rounded-lg bg-pink-300 hover:bg-pink-900"
-          >
-            <SaveBMPIcon selected={false} />
-            BMP
+            🧹 {/* Eraser Emoji */}
           </button>
 
           {/* Save as WebP */}
@@ -489,8 +493,7 @@ canvas.height = 2808;
             onClick={saveAsWebP}
             className="p-2 rounded-lg bg-indigo-500 hover:bg-indigo-900"
           >
-            <SaveIcon selected={false} />
-            WEBP
+            💾 WEBP
           </button>
 
           {/* Save as Base64 String */}
@@ -506,7 +509,7 @@ canvas.height = 2808;
             onClick={saveAsSVG2}
             className="p-2 rounded-lg bg-fuchsia-500 hover:bg-fuchsia-900"
           >
-            💾 saveAsSVG2
+            💾 Save as SVG2
           </button>
         </div>
       </div>
