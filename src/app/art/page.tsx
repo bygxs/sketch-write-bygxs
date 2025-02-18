@@ -198,75 +198,6 @@ canvas.height = 2808;
     setPenColor(e.target.value);
   };
 
-
-
-
-
-
-/* 
-  
-  // Save the current drawing as an SVG * @description: Calls flattenCanvas() to ensure the drawing is flattened before export 
-  const saveAsSVG = () => {
-    if (!canvasRef.current) return;
-    const canvas = canvasRef.current;
-    flattenCanvas(canvasRef, canvasColor); // Pass canvasRef to flattenCanvas
-
-    const dataURL = canvas.toDataURL("image/png");
-
-    // Create SVG with embedded background
-    const svgContent = `<?xml version="1.0" encoding="UTF-8"?>
-      <svg xmlns="http://www.w3.org/2000/svg" 
-           xmlns:xlink="http://www.w3.org/1999/xlink"
-           width="${canvas.width}" 
-           height="${canvas.height}">
-        <rect width="100%" height="100%" fill="${canvasColor}"/>
-        <!-- Embedding the PNG image -->
-        <image xlink:href="${dataURL}" width="100%" height="100%" preserveAspectRatio="none"/>
-      </svg>`;
-
-    // Universal mobile handling
-    if (/(iPhone|iPad|iPod|Android)/i.test(navigator.userAgent)) {
-      const mobileUrl = URL.createObjectURL(
-        new Blob([svgContent], { type: "image/svg+xml" })
-      );
-      const newWindow = window.open(mobileUrl, "_blank");
-
-      // Fallback if popup blocked
-      if (!newWindow) {
-        const link = document.createElement("a");
-        link.href = mobileUrl;
-        link.target = "_blank";
-        link.style.display = "none";
-        document.body.appendChild(link);
-
-        if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
-          alert(
-            '1. Tap the share icon\n2. Select "Save to Files"\n3. Choose location'
-          );
-        }
-        link.click();
-        document.body.removeChild(link);
-      }
-
-      // Cleanup after delay
-      setTimeout(() => URL.revokeObjectURL(mobileUrl), 30000);
-    } else {
-      // Desktop download
-      const link = document.createElement("a");
-      link.download = "drawing.svg";
-      link.href = URL.createObjectURL(
-        new Blob([svgContent], { type: "image/svg+xml" })
-      );
-      link.click();
-      URL.revokeObjectURL(link.href);
-    }
-  };
- */
-
-
-
-
-
   /**
    * Saves the canvas as a PNG image, including the background and the drawing.
    */
@@ -340,8 +271,6 @@ canvas.height = 2808;
     }
   };
 
-
-  
   /**
    * BMP (Bitmap) is a raster graphics image file format that stores bitmap digital images.
    * It is known for its simplicity and wide compatibility across platforms and applications.
@@ -623,17 +552,6 @@ canvas.height = 2808;
         >
           <EraserIcon selected={selectedTool === "eraser"} />
         </button>
-
-
-       {/*  <button
-          onClick={saveAsSVG}
-          onTouchEnd={saveAsSVG} // Mobile touch support
-          className="p-2 rounded-lg bg-white hover:bg-gray-50"
-        >
-          <SaveIcon />
-        </button> */}
-
-
 
         <button
           onClick={saveAsPNG} // Trigger saveAsPNG function
