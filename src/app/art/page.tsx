@@ -440,26 +440,6 @@ canvas.height = 2808;
             💾 BMP
           </button>
 
-          {/* Palette Tool */}
-          <label className="relative cursor-pointer">
-            <input
-              type="color"
-              ref={canvasColorInputRef}
-              className="absolute opacity-0 w-0 h-0"
-              value={canvasColor}
-              onChange={handleCanvasColorChange}
-            />
-            <div
-              onClick={() => setSelectedTool("palette")}
-              className={`p-2 rounded-lg ${
-                selectedTool === "palette" ? "bg-blue-100" : "bg-white"
-              }`}
-            >
-              🎨 {/* Palette Emoji */}
-            </div>
-          </label>
-
-          {/* Pen Tool */}
           <label className="relative cursor-pointer">
             <input
               type="color"
@@ -474,18 +454,28 @@ canvas.height = 2808;
                 selectedTool === "pen" ? "bg-blue-100" : "bg-white"
               }`}
             >
-              ✏️ {/* Pen Emoji */}
+              <PenIcon selected={selectedTool === "pen"} />
             </div>
           </label>
-
-          {/* Eraser Tool */}
+          <label className="relative cursor-pointer">
+            <input
+              type="color"
+              ref={canvasColorInputRef}
+              className="absolute opacity-0 w-0 h-0"
+              value={canvasColor}
+              onChange={handleCanvasColorChange}
+            />
+            <div className="p-2 rounded-lg bg-white hover:bg-gray-50">
+              <PaletteIcon />
+            </div>
+          </label>
           <button
             onClick={() => setSelectedTool("eraser")}
             className={`p-2 rounded-lg ${
               selectedTool === "eraser" ? "bg-blue-100" : "bg-white"
             }`}
           >
-            🧹 {/* Eraser Emoji */}
+            <EraserIcon selected={selectedTool === "eraser"} />
           </button>
 
           {/* Save as WebP */}
