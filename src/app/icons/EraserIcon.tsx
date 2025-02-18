@@ -3,7 +3,7 @@ import React from "react";
 const EraserIcon = ({ selected }: { selected: boolean }) => (
   <svg
     className={`w-6 h-6 ${selected ? "text-blue-500" : "text-gray-600"}`}
-    fill="none"
+    fill="currentColor" // Ensures the icon color is inherited
     stroke="currentColor"
     viewBox="0 0 24 24"
   >

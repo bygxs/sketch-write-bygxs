@@ -1,3 +1,4 @@
+// src/app/icons/PenIcon.tsx
 import React from "react";
 
 const PenIcon = ({ selected }: { selected: boolean }) => (
