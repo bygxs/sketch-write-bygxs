@@ -423,7 +423,6 @@ canvas.height = 2808;
           >
             💾 PNG
           </button>
-
           {/* Save as JPEG */}
           <button
             onClick={saveAsJPEG}
@@ -431,7 +430,6 @@ canvas.height = 2808;
           >
             💾 JPEG
           </button>
-
           {/* Save as BMP */}
           <button
             onClick={saveAsBMP}
@@ -439,7 +437,7 @@ canvas.height = 2808;
           >
             💾 BMP
           </button>
-
+          {/* Pen Tool */}
           <label className="relative cursor-pointer">
             <input
               type="color"
@@ -457,6 +455,8 @@ canvas.height = 2808;
               <PenIcon selected={selectedTool === "pen"} />
             </div>
           </label>
+
+          {/* Canvas Color Picker */}
           <label className="relative cursor-pointer">
             <input
               type="color"
@@ -469,6 +469,8 @@ canvas.height = 2808;
               <PaletteIcon />
             </div>
           </label>
+
+          {/* Eraser Tool */}
           <button
             onClick={() => setSelectedTool("eraser")}
             className={`p-2 rounded-lg ${
@@ -485,7 +487,6 @@ canvas.height = 2808;
           >
             💾 WEBP
           </button>
-
           {/* Save as Base64 String */}
           <button
             onClick={saveAsBase64String}
@@ -493,7 +494,6 @@ canvas.height = 2808;
           >
             💾 Base64
           </button>
-
           {/* Save as SVG */}
           <button
             onClick={saveAsSVG2}
