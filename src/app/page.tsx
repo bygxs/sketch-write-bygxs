@@ -49,7 +49,52 @@ export default function Home() {
               + ArtTrueArt
             </Link>
           </div>
+{/* 
+          <div>
+            <Link
+              href="/draw2flattened"
+              className="inline-block px-6 py-3 bg-indigo-600 text-white font-semibold rounded-md shadow hover:bg-indigo-700 transition duration-200"
+            >
+              + draw2flattened
+            </Link>
+          </div>
 
+          <div>
+            <Link
+              href="/drawRush"
+              className="inline-block px-6 py-3 bg-indigo-600 text-white font-semibold rounded-md shadow hover:bg-indigo-700 transition duration-200"
+            >
+              + draw RUSH
+            </Link>
+          </div>
+
+          <div>
+            <Link
+              href="/drawExport"
+              className="inline-block px-6 py-3 bg-indigo-600 text-white font-semibold rounded-md shadow hover:bg-indigo-700 transition duration-200"
+            >
+              + draw EXPORT
+            </Link>
+          </div>
+
+          <div>
+            <Link
+              href="/draw2"
+              className="inline-block px-6 py-3 bg-indigo-600 text-white font-semibold rounded-md shadow hover:bg-indigo-700 transition duration-200"
+            >
+              + draw2
+            </Link>
+          </div>
+
+          <div>
+            <Link
+              href="/drawing"
+              className="inline-block px-6 py-3 bg-indigo-600 text-white font-semibold rounded-md shadow hover:bg-indigo-700 transition duration-200"
+            >
+              + New Drawing
+            </Link>
+          </div>
+ */}
           {/* Notebooks Section */}
           <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
             Drawings

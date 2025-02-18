@@ -1,95 +1,19 @@
-//src/app/art/page.tsx
-
+//src/app/art/page.tsx'
 "use client";
+
+import PenIcon from "../icons/PenIcon";
+import EraserIcon from '../icons/EraserIcon';
+import PaletteIcon from '../icons/PaletteIcon';
+import SaveIcon from '../icons/SaveIcon';
+import SaveBMPIcon from '../icons/SaveBMPIcon';
 
 import { useState, useRef, useEffect } from "react";
 
-// Pen Icon Component
-const PenIcon = ({ selected }: { selected: boolean }) => (
-  <svg
-    className={`w-6 h-6 ${selected ? "text-blue-500" : "text-gray-600"}`}
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-    />
-  </svg>
-);
 
-// Eraser Icon Component
-const EraserIcon = ({ selected }: { selected: boolean }) => (
-  <svg
-    className={`w-6 h-6 ${selected ? "text-blue-500" : "text-gray-600"}`}
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M6 18L18 6M6 6l12 12"
-    />
-  </svg>
-);
-
-// Palette Icon Component
-const PaletteIcon = () => (
-  <svg
-    className="w-6 h-6 text-gray-600"
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12h4a4 4 0 01-4 4H7zM15 5a2 2 0 012-2h4a2 2 0 012 2v12h-4M7 7h.01M11 7h.01"
-    />
-  </svg>
-);
-
-// Save Icon Component
-const SaveIcon = () => (
-  <svg
-    className="w-6 h-6 text-gray-600"
-    fill="none"
-    stroke="currentColor"
-    viewBox="0 0 24 24"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"
-    />
-  </svg>
-);
-
-// Floppy Disk Icon Component
-const SaveBMPIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-6 w-6 text-gray-500 hover:text-blue-500"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth="2"
-    fill="none"
-  >
-    <path d="M5 5h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm10 12v-2a2 2 0 0 0-2-2H9l2-2h6a2 2 0 0 0 2 2v2h2v-2zm0-8H9l2-2h6v2z" />
-  </svg>
-);
-/**
- * Flattening the Canvas
- * @description: Captures the current drawing, redraws the background color, and flattens all drawing layers into one single canvas
+/* Flattening the Canvas
+@description: Captures the current drawing, redraws the background color, and flattens all drawing layers into one single canvas
  */
-const flattenCanvas = (
+/* const flattenCanvas = (
   canvasRef: React.RefObject<HTMLCanvasElement>,
   canvasColor: string
 ) => {
@@ -108,6 +32,9 @@ const flattenCanvas = (
     ctx!.drawImage(tempImg, 0, 0, canvas.width, canvas.height); // Redraw it as a single layer
   };
 };
+ */
+ 
+
 
 /**
  * Main Drawing Page Component
@@ -197,6 +124,66 @@ canvas.height = 2808;
   const handlePenColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPenColor(e.target.value);
   };
+
+  /* 
+  
+  // Save the current drawing as an SVG * @description: Calls flattenCanvas() to ensure the drawing is flattened before export 
+  const saveAsSVG = () => {
+    if (!canvasRef.current) return;
+    const canvas = canvasRef.current;
+    flattenCanvas(canvasRef, canvasColor); // Pass canvasRef to flattenCanvas
+
+    const dataURL = canvas.toDataURL("image/png");
+
+    // Create SVG with embedded background
+    const svgContent = `<?xml version="1.0" encoding="UTF-8"?>
+      <svg xmlns="http://www.w3.org/2000/svg" 
+           xmlns:xlink="http://www.w3.org/1999/xlink"
+           width="${canvas.width}" 
+           height="${canvas.height}">
+        <rect width="100%" height="100%" fill="${canvasColor}"/>
+        <!-- Embedding the PNG image -->
+        <image xlink:href="${dataURL}" width="100%" height="100%" preserveAspectRatio="none"/>
+      </svg>`;
+
+    // Universal mobile handling
+    if (/(iPhone|iPad|iPod|Android)/i.test(navigator.userAgent)) {
+      const mobileUrl = URL.createObjectURL(
+        new Blob([svgContent], { type: "image/svg+xml" })
+      );
+      const newWindow = window.open(mobileUrl, "_blank");
+
+      // Fallback if popup blocked
+      if (!newWindow) {
+        const link = document.createElement("a");
+        link.href = mobileUrl;
+        link.target = "_blank";
+        link.style.display = "none";
+        document.body.appendChild(link);
+
+        if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+          alert(
+            '1. Tap the share icon\n2. Select "Save to Files"\n3. Choose location'
+          );
+        }
+        link.click();
+        document.body.removeChild(link);
+      }
+
+      // Cleanup after delay
+      setTimeout(() => URL.revokeObjectURL(mobileUrl), 30000);
+    } else {
+      // Desktop download
+      const link = document.createElement("a");
+      link.download = "drawing.svg";
+      link.href = URL.createObjectURL(
+        new Blob([svgContent], { type: "image/svg+xml" })
+      );
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }
+  };
+ */
 
   /**
    * Saves the canvas as a PNG image, including the background and the drawing.
@@ -552,6 +539,14 @@ canvas.height = 2808;
         >
           <EraserIcon selected={selectedTool === "eraser"} />
         </button>
+
+        {/*  <button
+          onClick={saveAsSVG}
+          onTouchEnd={saveAsSVG} // Mobile touch support
+          className="p-2 rounded-lg bg-white hover:bg-gray-50"
+        >
+          <SaveIcon />
+        </button> */}
 
         <button
           onClick={saveAsPNG} // Trigger saveAsPNG function
