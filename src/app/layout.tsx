@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Head from "next/head";
 
+import { version } from "../../package.json";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -32,7 +34,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        <footer className="text-xs fixed bottom-0 left-0 right-0 flex justify-center items-center bg-gray-800 text-white">
+          Version: {version}
+        </footer>
       </body>
+      
     </html>
   );
 }
