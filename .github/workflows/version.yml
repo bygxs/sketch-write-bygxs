@@ -1,72 +1,136 @@
 name: Bump Version
 
-# Trigger the workflow on push events to specific branches
 on:
   push:
     branches:
-     # - main  # Trigger on pushes to the 'main' branch
-      - dev   # Trigger on pushes to the 'dev' branch
+      - dev
 
 jobs:
   bump-version:
-    runs-on: ubuntu-latest  # Run the job on the latest Ubuntu environment
+    runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the repository code
       - name: Checkout code
-        uses: actions/checkout@v2  # Use the checkout action to access the code
+        uses: actions/checkout@v2
 
-      # Step 2: Set up Node.js environment
       - name: Setup Node.js
-        uses: actions/setup-node@v2  # Use the setup-node action
+        uses: actions/setup-node@v2
         with:
-          node-version: "22"  # Specify the version of Node.js to use (version 22)
+          node-version: "22"
 
-      # Step 3: Configure Git user identity
       - name: Configure Git
         run: |
-          git config --global user.email "biniyamyohannes@icloud.com"  # Set your email for commits
-          git config --global user.name "bygxs"                        # Set your name for commits
+          git config --global user.email "biniyamyohannes@icloud.com"
+          git config --global user.name "bygxs"
 
-      # Step 4: Bump the version based on commit messages
       - name: Bump version
         id: bump-version
         run: |
-          # Bump version based on commit message
           if git log -1 --pretty=%B | grep -q "feat:"; then
-            # If the commit message contains "feat:", bump the minor version
             npm version minor -m "Bump version to %s [skip ci]"
           elif git log -1 --pretty=%B | grep -q "fix:"; then
-            # If the commit message contains "fix:", bump the patch version
             npm version patch -m "Bump version to %s [skip ci]"
           else
-            # If no relevant commit message is found, skip version bump
             echo "No version bump needed."
             exit 0
           fi
 
-      # Step 5: Update CHANGELOG.md with the new version and changes
       - name: Update CHANGELOG.md
         run: |
-          # Check if tags exist
           if git describe --tags --abbrev=0 > /dev/null 2>&1; then
-            # If tags exist, update CHANGELOG.md with the latest version and changes
             echo "## $(git describe --tags --abbrev=0)" >> CHANGELOG.md
             git log --pretty=format:"- %s" $(git describe --tags --abbrev=0)^..HEAD >> CHANGELOG.md
           else
-            # If no tags exist, initialize CHANGELOG.md with the first version (v1.0.0)
             echo "## v1.0.0" >> CHANGELOG.md
             git log --pretty=format:"- %s" >> CHANGELOG.md
           fi
-          # Stage and commit the updated CHANGELOG.md
           git add CHANGELOG.md
           git commit -m "Update CHANGELOG.md for version $(git describe --tags --abbrev=0 || echo 'v1.0.0')"
 
-      # Step 6: Push the changes to the remote repository
       - name: Push changes
         run: |
-          git push  # Push the new version commit to the remote
-          git push --tags  # Push the new version tag to the remote
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/bygxs/sketch-write-bygxs.git
+          git push
+          git push --tags
+
+
+
+
+
+
+
+
+
+# :name: Bump Version
+
+# # Trigger the workflow on push events to specific branches
+# on:
+#   push:
+#     branches:
+#      # - main  # Trigger on pushes to the 'main' branch
+#       - dev   # Trigger on pushes to the 'dev' branch
+
+# jobs:
+#   bump-version:
+#     runs-on: ubuntu-latest  # Run the job on the latest Ubuntu environment
+
+#     steps:
+#       # Step 1: Check out the repository code
+#       - name: Checkout code
+#         uses: actions/checkout@v2  # Use the checkout action to access the code
+
+#       # Step 2: Set up Node.js environment
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v2  # Use the setup-node action
+#         with:
+#           node-version: "22"  # Specify the version of Node.js to use (version 22)
+
+#       # Step 3: Configure Git user identity
+#       - name: Configure Git
+#         run: |
+#           git config --global user.email "biniyamyohannes@icloud.com"  # Set your email for commits
+#           git config --global user.name "bygxs"                        # Set your name for commits
+
+#       # Step 4: Bump the version based on commit messages
+#       - name: Bump version
+#         id: bump-version
+#         run: |
+#           # Bump version based on commit message
+#           if git log -1 --pretty=%B | grep -q "feat:"; then
+#             # If the commit message contains "feat:", bump the minor version
+#             npm version minor -m "Bump version to %s [skip ci]"
+#           elif git log -1 --pretty=%B | grep -q "fix:"; then
+#             # If the commit message contains "fix:", bump the patch version
+#             npm version patch -m "Bump version to %s [skip ci]"
+#           else
+#             # If no relevant commit message is found, skip version bump
+#             echo "No version bump needed."
+#             exit 0
+#           fi
+
+#       # Step 5: Update CHANGELOG.md with the new version and changes
+#       - name: Update CHANGELOG.md
+#         run: |
+#           # Check if tags exist
+#           if git describe --tags --abbrev=0 > /dev/null 2>&1; then
+#             # If tags exist, update CHANGELOG.md with the latest version and changes
+#             echo "## $(git describe --tags --abbrev=0)" >> CHANGELOG.md
+#             git log --pretty=format:"- %s" $(git describe --tags --abbrev=0)^..HEAD >> CHANGELOG.md
+#           else
+#             # If no tags exist, initialize CHANGELOG.md with the first version (v1.0.0)
+#             echo "## v1.0.0" >> CHANGELOG.md
+#             git log --pretty=format:"- %s" >> CHANGELOG.md
+#           fi
+#           # Stage and commit the updated CHANGELOG.md
+#           git add CHANGELOG.md
+#           git commit -m "Update CHANGELOG.md for version $(git describe --tags --abbrev=0 || echo 'v1.0.0')"
+
+#       # Step 6: Push the changes to the remote repository
+#       - name: Push changes
+#         run: |
+#           git push  # Push the new version commit to the remote
+#           git push --tags  # Push the new version tag to the remote
+
 
 # name: Bump Version # Name of the workflow
 # on: # Specifies the event that triggers the workflow

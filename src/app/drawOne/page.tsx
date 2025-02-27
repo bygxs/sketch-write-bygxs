@@ -416,7 +416,7 @@ canvas.height = 2808;
               onChange={handleCanvasColorChange}
             />
             <div className="p-2 rounded-lg bg-white hover:bg-gray-50">
-              <PaletteIcon />
+              <PaletteIcon selected={false} />
             </div>
           </label>
           {/* Eraser Tool */}
