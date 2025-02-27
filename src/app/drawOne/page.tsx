@@ -7,7 +7,6 @@ import PaletteIcon from "../icons/PaletteIcon";
 import SaveIcon from "../icons/SaveIcon";
 import SaveBMPIcon from "../icons/SaveBMPIcon";
 
-
 import { useState, useRef, useEffect } from "react";
 import DropdownMenu from "../../components/dropdownMenu";
 
@@ -173,15 +172,6 @@ canvas.height = 2808;
     }
   };
 
-  /**
-   * BMP (Bitmap) is a raster graphics image file format that stores bitmap digital images.
-   * It is known for its simplicity and wide compatibility across platforms and applications.
-   * BMP files are typically uncompressed, preserving all image data without loss of quality,
-   * making them suitable for scenarios where image fidelity is critical, such as graphic design
-   * and medical imaging. However, BMP files tend to be larger in size compared to other formats
-   * like PNG or JPEG, which may not be ideal for web use or storage efficiency.
-   */
-
   const saveAsBMP = () => {
     if (!canvasRef.current) return;
 
@@ -224,16 +214,6 @@ canvas.height = 2808;
     }
   };
 
-  /**
-   * WebP is an image format developed by Google that provides both lossy and lossless compression
-   * for images on the web. It offers superior compression compared to traditional formats like JPEG
-   * and PNG, resulting in smaller file sizes while maintaining high quality. WebP supports alpha
-   * transparency, making it suitable for images with transparent backgrounds, and can also be used
-   * for animated images. While most modern browsers support WebP, some older browsers may not,
-   * so it's important to consider fallback options. WebP is ideal for optimizing web performance
-   * and reducing bandwidth usage while delivering high-quality visuals.
-   */
-
   const saveAsWebP = () => {
     if (!canvasRef.current) return;
 
@@ -268,17 +248,6 @@ canvas.height = 2808;
       };
     }
   };
-
-  /**
-   *Base64 String  It is commonly used to encode images,files, or other binary data for transmission over text-based protocols such as HTTP or email.
-   *  Base64 String is a binary-to-text encoding scheme that represents binary data in an ASCII string
-   * format by translating it into a radix-64 representation.Base64 encoding increases the size of
-   * the data by approximately 33%, but it allows for easy
-   * embedding of binary content directly within text files, such as HTML or CSS. This is particularly
-   * useful for including small images or files inline, reducing the number of HTTP requests needed
-   * for web pages. However, for larger files, it is generally more efficient to use standard file
-   * references instead of embedding them as Base64 strings.
-   */
 
   const saveAsBase64String = () => {
     if (!canvasRef.current) return;
@@ -317,16 +286,6 @@ canvas.height = 2808;
       };
     }
   };
-
-  /**
-   * SVG (Scalable Vector Graphics) is an XML-based vector image format used for defining two-dimensional
-   * graphics with support for interactivity and animation. Unlike raster formats (e.g., JPEG, PNG), SVG
-   * images are composed of paths, shapes, and text, allowing them to be scaled infinitely without loss
-   * of quality. This makes SVG ideal for responsive web design, logos, icons, and illustrations. SVG
-   * files are lightweight and can be manipulated via CSS and JavaScript, enabling dynamic and interactive
-   * graphics. Additionally, SVG supports features like transparency, gradients, and filters. However,
-   * complex SVG files can become large and may require optimization for performance in web applications.
-   */
 
   const saveAsSVG2 = () => {
     if (!canvasRef.current) return;
@@ -387,14 +346,13 @@ canvas.height = 2808;
     }
   };
 
+  // Drawing functions (startDrawing, handleDraw, etc.) go here...
+
   return (
     <div className="h-screen flex flex-col">
       {/* Canvas Area */}
-
-
-
       <div
-        className="flex-1 relative pb-[84px] z-10 " /* // Set z-10 for the canvas */
+        className="flex-1 relative pb-[84px] z-0" // Set z-0 for the canvas
         style={{
           backgroundColor: canvasColor,
           paddingBottom: "env(safe-area-inset-bottom)",
@@ -414,40 +372,22 @@ canvas.height = 2808;
 
       {/* Bottom Toolbar */}
       <div
-        className="fixed bottom-0 left-0 right-0 p-4 bg-gray-100 border-t flex gap-4 items-center justify-center overflow-x-auto"
+        className="fixed bottom-0 left-0 right-0 p-4 bg-gray-100 border-t flex gap-4 items-center justify-center overflow-x-auto z-10" // Set z-10 for the toolbar
         style={{
           paddingBottom: "env(safe-area-inset-bottom)",
           height: "84px",
         }}
       >
         <div className="flex justify-center space-x-4">
-
-
-
-
-
-          
-          {/* Save as PNG */}
-        {/*   <button
-            onClick={saveAsPNG}
-            className="p-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600"
-          >
-            💾 PNG
-          </button>
-          {/* Save as JPEG */}
-      {/*     <button
-            onClick={saveAsJPEG}
-            className="p-2 rounded-lg bg-green-500 hover:bg-gray-50"
-          >
-            💾 JPEG
-          </button> */}
-          {/* Save as BMP */}
-        {/*   <button
-            onClick={saveAsBMP}
-            className="p-2 rounded-lg bg-pink-300 hover:bg-pink-900"
-          >
-            💾 BMP
-          </button>  */}
+          {/* Dropdown Menu for Save Options */}
+          <DropdownMenu
+            saveAsPNG={saveAsPNG}
+            saveAsJPEG={saveAsJPEG}
+            saveAsBMP={saveAsBMP}
+            saveAsWebP={saveAsWebP}
+            saveAsBase64String={saveAsBase64String}
+            saveAsSVG2={saveAsSVG2}
+          />
           {/* Pen Tool */}
           <label className="relative cursor-pointer">
             <input
@@ -466,7 +406,6 @@ canvas.height = 2808;
               <PenIcon selected={selectedTool === "pen"} />
             </div>
           </label>
-
           {/* Canvas Color Picker */}
           <label className="relative cursor-pointer">
             <input
@@ -480,7 +419,6 @@ canvas.height = 2808;
               <PaletteIcon />
             </div>
           </label>
-
           {/* Eraser Tool */}
           <button
             onClick={() => setSelectedTool("eraser")}
@@ -490,38 +428,6 @@ canvas.height = 2808;
           >
             <EraserIcon selected={selectedTool === "eraser"} />
           </button>
-
-          {/* Save as WebP */}
-      {/*     <button
-            onClick={saveAsWebP}
-            className="p-2 rounded-lg bg-indigo-500 hover:bg-indigo-900"
-          >
-            💾 WEBP
-          </button> */}
-          {/* Save as Base64 String */}
-    {/*       <button
-            onClick={saveAsBase64String}
-            className="p-2 rounded-lg bg-cyan-500 hover:bg-cyan-950"
-          >
-            💾 Base64
-          </button> */}
-          {/* Save as SVG */}
-       {/*    <button
-            onClick={saveAsSVG2}
-            className="p-2 rounded-lg bg-fuchsia-500 hover:bg-fuchsia-900"
-          >
-            💾 Save as SVG2
-          </button> */}
-
-          // Inside your component
-<DropdownMenu 
-  saveAsPNG={saveAsPNG}
-  saveAsJPEG={saveAsJPEG}
-  saveAsBMP={saveAsBMP}
-  saveAsWebP={saveAsWebP}
-  saveAsBase64String={saveAsBase64String}
-  saveAsSVG2={saveAsSVG2}
-/>
         </div>
       </div>
     </div>

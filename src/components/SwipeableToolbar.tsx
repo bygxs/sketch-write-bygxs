@@ -1,8 +1,11 @@
+
 import React, { useState, useRef, useEffect, JSX } from "react";
 
 interface SwipeableToolbarProps {
   tools: { label: string; icon: JSX.Element; onClick: () => void }[];
 }
+
+
 
 const SwipeableToolbar: React.FC<SwipeableToolbarProps> = ({ tools }) => {
   const [visible, setVisible] = useState(false);
