@@ -1,9 +1,9 @@
 {
   "name": "sketch-write-bygxs",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "private": true,
   "scripts": {
-      "version-and-tag": "npm version patch && git push --tags",
+    "version-and-tag": "npm version patch && git push --tags",
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
